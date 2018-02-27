@@ -10,34 +10,34 @@ from sklearn.metrics import mean_squared_error
 # 将两部分的训练集train1，train2共同组合成总得训练集train
 train =  pd.read_csv(r"../dataset/d_train_20180102_1.csv",encoding='utf-8')
 test  =  pd.read_csv(r"../dataset/d_test_A_20180102.csv", encoding='utf-8')
+test_b  =  pd.read_csv(r"../dataset/d_test_B_20180128_utf.csv", encoding='utf-8')
 
 
-def make_feat(train, test):
+def make_feat(train, test, test_B):
     train_id = train.id.values.copy()
-    test_id  = test.id.values.copy()
 
-
+    test_id  = np.append(test.id.values.copy(), test_B.id.values.copy())
 
 
     train    = train[train['年龄'] >= 16]
     train    = train[train['血糖'] <= 18]
 
-    data = pd.concat([train, test])
+    data = pd.concat([train, test,test_B])
 
     data['性别'] = data['性别'].map({'男':1, '女': 0,'??':1})
 
     data.drop(['乙肝表面抗原', '乙肝表面抗体', '乙肝e抗原', '乙肝e抗体', '乙肝核心抗体', '体检日期'], axis=1, inplace= True)
 
     train_feat = data[data.id.isin(train_id)]
-    test_feat  = data[data.id.isin(test_id)]
+    test_feat  = data[data.id.isin(test_id)  ]
+    print(len(test_feat))
     del train_feat['id']
     del test_feat['id']
     return train_feat, test_feat
 
-train_feat, test_feat = make_feat(train, test)
+train_feat, test_feat = make_feat(train, test, test_b)
 
 predictors = [f for f in test_feat.columns if f  not in ['血糖']]
-
 
 
 
