@@ -1,4 +1,3 @@
-
 import pandas as pd
 import datetime
 import numpy as np
@@ -49,13 +48,15 @@ def evalerror(pred, df):
 params = {
     'learning_rate': 0.01,
     'boosting_type': 'gbdt',
-    'objective': 'regression',
+    'objective': 'poisson',
     'metric': 'mse',
-    'sub_feature': 0.9,
-    'num_leaves': 16,
-    'colsample_bytree': 0.9,
+    'sub_feature': 0.8,
+    'num_leaves': 12,
+    'colsample_bytree': 0.6,
     'bagging_freq': 1,
     'max_depth':6,
+    'min_data':5,
+    'min_hessian':1,
     'verbose': -1
 }
 
